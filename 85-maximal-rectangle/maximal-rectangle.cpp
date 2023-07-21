@@ -1,26 +1,36 @@
 class Solution {
 public:
+    // this find the largest area of histogram
     int histogramArea(vector<int> &arr){
+        // idea: is to find next smaller and prev smaller in one go at the same time find area
         int n = arr.size();
+        stack<int> s; // this will always have the prev smaller of ith ele
+        int ans = INT_MIN;
 
-        stack<int> s; // initialize a stack to store indices
-        s.push(0);
-        
-        int currarea, area = INT_MIN;
-        
-        // run the loop till n to include the rest of the pillars in the stack too
         for(int i=0; i<=n; i++){
-            while(!s.empty() and (i==n or arr[s.top()] >= arr[i])){ // if the current element is less than the previous element
-                int temp = s.top();
+            while(!s.empty() and (i==n or arr[i] <= arr[s.top()])){
+                int curr = s.top();
                 s.pop();
-                
-                // calculate the area with the popped bar as the smallest bar
-                currarea = arr[temp] * ((s.empty()) ? i : (i-s.top()-1));
-                area = max(area, currarea);
+
+                // now we will find the area for the item that we popped
+                // as now after popping we have its prev smaller
+                // and current element i is its next smaller
+                int l = arr[curr];
+                int b = 0;
+                if(!s.empty())
+                    b = i - s.top() - 1;
+                else
+                    b = i - 0;
+
+                int currarea = l*b;
+
+                ans = max(ans, currarea);
             }
-            s.push(i); // push the current index into the stack
+
+            s.push(i);
         }
-        return area;
+
+        return ans;
     }
     int maximalRectangle(vector<vector<char>>& arr) {
         // in this we go from bottom to top and keep change the matrix by adding below columns
