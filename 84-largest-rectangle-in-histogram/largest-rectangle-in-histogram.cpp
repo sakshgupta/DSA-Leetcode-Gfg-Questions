@@ -64,7 +64,40 @@ public:
 
         return area;
     }
+
+    // a bit better o(n), o(n)
+    int solve_better(vector<int> &arr){
+        // idea: is to find next smaller and prev smaller in one go at the same time find area
+        int n = arr.size();
+        stack<int> s; // this will always have the prev smaller of ith ele
+        int ans = INT_MIN;
+
+        for(int i=0; i<=n; i++){
+            while(!s.empty() and (i==n or arr[i] <= arr[s.top()])){
+                int curr = s.top();
+                s.pop();
+
+                // now we will find the area for the item that we popped
+                // as now after popping we have its prev smaller
+                // and current element i is its next smaller
+                int l = arr[curr];
+                int b = 0;
+                if(!s.empty())
+                    b = i - s.top() - 1;
+                else
+                    b = i - 0;
+
+                int currarea = l*b;
+
+                ans = max(ans, currarea);
+            }
+
+            s.push(i);
+        }
+
+        return ans;
+    }
     int largestRectangleArea(vector<int>& heights) {
-        return solve(heights);
+        return solve_better(heights);
     }
 };
