@@ -59,9 +59,42 @@ public:
 
         return dp[0][0];
     }
+
+    // space_optimization
+    bool solve_tab_space_optimization(string &s, string &p){
+        vector<int> curr(p.size()+1, 0);
+        vector<int> next(p.size()+1, 0);
+
+        next[p.size()] = 1;
+        for(int i=p.size()-1; i>=0; i--){
+            if(p[i] == '*'){
+                next[i] = next[i+1];
+            }
+            else{
+                next[i] = 0;
+            }
+        }
+
+        for(int i=s.size()-1; i>=0; i--){
+            for(int j=p.size()-1; j>=0; j--){
+                bool ans = 0;
+                if(p[j] == '?' || s[i] == p[j]){
+                    ans = next[j+1];
+                }
+                else if(p[j] == '*'){
+                    ans = curr[j+1] || next[j];
+                }
+
+                curr[j] = ans;
+            }
+            next = curr;
+        }
+
+        return next[0];
+    }
     bool isMatch(string s, string p) {
         // vector<vector<int>> dp(s.size()+1, vector<int> (p.size()+1, -1));
         // return solve(s, p, s.length(), p.length(), dp);
-        return solve_tab(s, p);
+        return solve_tab_space_optimization(s, p);
     }
 };
