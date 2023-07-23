@@ -16,11 +16,35 @@ public:
         return dp[i][sum] = takeIt+leaveIt;
     }
 
-    int change(int amount, vector<int>& coins) {
+    
+    // tab
+    long long int solve_tab(vector<int>& coins, int sum) {
         int n = coins.size();
-        vector<vector<long long int>> dp(n+1, vector<long long int>(amount+1, -1));
-        return solve(coins, 0, amount, dp);
+        vector<vector<long long int>> dp(n+1, vector<long long int>(sum+1, -1));
         
-        // return solve_tab(coins, amount);
+        // base case
+        for(int i=0; i<n+1; i++) dp[i][0]=1;
+        for(int i=1; i<sum+1; i++) dp[0][i]=0;
+        
+        for(int i=1; i<n+1; i++){
+            for(int j=1; j<sum+1; j++){
+                if(coins[i-1]<=j) {
+                    dp[i][j]=(dp[i-1][j]+dp[i][j-coins[i-1]]);
+                } 
+                else {
+                    dp[i][j]=dp[i-1][j];
+                }
+            }
+        }
+        
+        return dp[n][sum];
+    }
+
+    int change(int amount, vector<int>& coins) {
+        // int n = coins.size();
+        // vector<vector<long long int>> dp(n+1, vector<long long int>(amount+1, -1));
+        // return solve(coins, 0, amount, dp);
+        
+        return solve_tab(coins, amount);
     }
 };
