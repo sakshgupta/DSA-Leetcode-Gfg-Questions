@@ -16,7 +16,6 @@ public:
         return dp[i][sum] = takeIt+leaveIt;
     }
 
-    
     // tab
     long long int solve_tab(vector<int>& coins, int sum) {
         int n = coins.size();
@@ -40,11 +39,36 @@ public:
         return dp[n][sum];
     }
 
+    // space_optimization
+    long long int solve_tab_space_optimization(vector<int>& coins, int sum) {
+        int n = coins.size();
+        vector<long long int> curr(sum+1, -1);
+        vector<long long int> prev(sum+1, -1);
+        
+        // base case
+        prev[0] = curr[0] = 1;
+        for(int i=1; i<sum+1; i++) prev[i]=0;
+        
+        for(int i=1; i<n+1; i++){
+            for(int j=1; j<sum+1; j++){
+                if(coins[i-1]<=j) {
+                    curr[j]=(prev[j]+curr[j-coins[i-1]]);
+                } 
+                else {
+                    curr[j]=prev[j];
+                }
+            }
+            prev = curr;
+        }
+        
+        return prev[sum];
+    }
+
     int change(int amount, vector<int>& coins) {
         // int n = coins.size();
         // vector<vector<long long int>> dp(n+1, vector<long long int>(amount+1, -1));
         // return solve(coins, 0, amount, dp);
         
-        return solve_tab(coins, amount);
+        return solve_tab_space_optimization(coins, amount);
     }
 };
