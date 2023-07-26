@@ -6,7 +6,8 @@ public:
         for(int i=0; i<dist.size()-1; i++){
             double currtime = (double)dist[i]/idx;
             sum += ceil(currtime);
-        }
+        } 
+        // for last ele add its time rather than ceil
         sum += (double)dist[dist.size()-1]/idx;
         // cout << idx << " " << sum << endl;
 
