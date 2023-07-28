@@ -41,10 +41,36 @@ public:
 
         return dp[0][arr.size()-1][0];
     }
+
+    // tab_space_optimization
+    int solve_tab_space_optimization(vector<int> &arr){
+        vector<vector<long>> curr(arr.size()+1, vector<long> (2, -1e10));
+        vector<vector<long>> next(arr.size()+1, vector<long> (2, -1e10));
+        int n = arr.size();
+
+        for(int i=n-1; i>= 0; i--){
+            for(int j=i; j<n; j++){
+                for(int turn = 1; turn >= 0; turn--){
+                    if(i < j){
+                        if(turn == 0){
+                            curr[j][turn] = max(arr[i] + next[j][1], arr[j] + curr[j-1][1]);
+                        }
+                        else{
+                            curr[j][turn] = min(-arr[i] + next[j][0], -arr[j] + curr[j-1][0]);
+                        }
+                    }
+                    else curr[j][turn] = arr[i];
+                }
+                next = curr;
+            }
+        }
+
+        return next[arr.size()-1][0];
+    }
     bool PredictTheWinner(vector<int>& nums) {
         // vector<vector<vector<long>>> dp(nums.size()+1, vector<vector<long>>(nums.size()+1, vector<long> (2, -1e10)));
         // int ans = solve(nums, 0, nums.size()-1, dp, 0);
-        int ans = solve_tab(nums);
+        int ans = solve_tab_space_optimization(nums);
         return ans >= 0;
     }
 };
