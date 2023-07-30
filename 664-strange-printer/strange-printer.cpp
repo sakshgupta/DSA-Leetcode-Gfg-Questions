@@ -15,9 +15,33 @@ public:
 
         return dp[i][j] = mini == INT_MAX ? -1 : mini;
     }
+
+    // tab
+    int solve_tab(string &s){
+        int n = s.length();
+        vector<vector<int>> dp(s.length(), vector<int> (s.length(), 1));
+
+        for(int i=n-1; i>=0; i--){
+            for(int j=0; j<n; j++){
+                if(i != j){
+                    int mini = INT_MAX;
+                    for(int k =i; k<j; k++){
+                        mini = min(mini, dp[i][k] + dp[k+1][j]);
+                    }
+                    if(s[i] == s[j]) mini = mini - 1;
+                    dp[i][j] = mini;
+                }
+            }
+        }
+
+        return dp[0][n-1];
+    }
+
     int strangePrinter(string s) {
         // idea: is to perform matrix chain multiplication and do partitions at each index then send for left and right part when i==j then ans will be 1 
-        vector<vector<int>> dp(s.length(), vector<int> (s.length(), -1));
-        return solve(s, 0, s.length()-1, dp);
+        // vector<vector<int>> dp(s.length(), vector<int> (s.length(), -1));
+        // return solve(s, 0, s.length()-1, dp);
+
+        return solve_tab(s);
     }
 };
