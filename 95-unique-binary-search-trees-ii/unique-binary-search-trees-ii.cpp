@@ -18,6 +18,9 @@ public:
             return trees;
         }
 
+        string key = to_string(start) + "saksham" + to_string(end);
+        if(dp.count(key)) return dp[key];
+
         for(int i = start; i<=end; i++){
             vector<TreeNode*> lefts = solve(start, i-1, dp);
             vector<TreeNode*> rights = solve(i+1, end, dp);
@@ -32,9 +35,12 @@ public:
             }
         }
 
-        return trees;
+        return dp[key] = trees;
     }
     vector<TreeNode*> generateTrees(int n) {
+        // idea: for left: go from start to i-1
+        // right: go from i+1 to end
+        // and keep forming trees using the vectors and keep pushing it in the main one
         if(n == 0) return vector<TreeNode*>();
 
         unordered_map<string, vector<TreeNode*>> dp;
