@@ -1,0 +1,2 @@
+<h2>check-completeness-of-a-binary-tree Notes</h2><hr>// idea: is to find the total count then go to each node with its index as it will be in a level order traversal then if its index > totalCount then return false
+        // in lot: parent -> i, leftchild -> 2*i+1, rightchild -> 2*i+2 (0 based indexing)
