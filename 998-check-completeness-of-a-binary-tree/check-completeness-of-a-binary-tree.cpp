@@ -29,10 +29,39 @@ public:
             return left and right;
         }
     }
+
+    // better using lot to go to each level and if found found null then found a valid node next to it that means its not a CBT
+    bool solve_better_lot(TreeNode* root){
+        if(root == NULL) return true;
+
+        queue<TreeNode*> q;
+        q.push(root);
+
+        bool emptyFlag = false;
+        while(!q.empty()){
+            int size = q.size();
+            for(int i=0; i<size; i++){
+                TreeNode* curr = q.front();
+                q.pop();
+
+                if(curr == NULL){
+                    emptyFlag = true;
+                }
+                else{
+                    if(emptyFlag) return false;
+                    q.push(curr->left);
+                    q.push(curr->right);
+                }
+            }
+        }
+        return true;
+    }
     bool isCompleteTree(TreeNode* root) {
         // idea: is to find the total count then go to each node with its index as it will be in a level order traversal then if its index > totalCount then return false
         // in lot: parent -> i, leftchild -> 2*i+1, rightchild -> 2*i+2 (0 based indexing)
-        int totalCount = countNodes(root);
-        return solve(root, 0, totalCount);
+        
+        // int totalCount = countNodes(root);
+        // return solve(root, 0, totalCount);
+        return solve_better_lot(root);
     }
 };
