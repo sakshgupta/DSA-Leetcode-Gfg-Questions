@@ -1,6 +1,8 @@
 class Solution {
 public:
     bool searchMatrix(vector<vector<int>>& matrix, int target) {
+        // take the pointer at the 0th row and last column then if target is less then same row so move col variable
+        // if target is more then move row variable
         int n = matrix.size();
         int m = matrix[0].size();
         cout << n << " " << m << endl;
