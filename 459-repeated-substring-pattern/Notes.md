@@ -1,0 +1,1 @@
+<h2>repeated-substring-pattern Notes</h2><hr>// idea: is to keep popping ele from the start and appending them at the back and if the strings get equal then we found the substring
